@@ -23,7 +23,7 @@ class TransactionList extends StatelessWidget {
                     style: TextStyle(
                       fontWeight: FontWeight.bold,
                       fontSize: 20,
-                      color: Colors.purple,
+                      color: Theme.of(context).primaryColorDark,
                     ),
                   ),
                   margin: EdgeInsets.symmetric(
@@ -33,7 +33,7 @@ class TransactionList extends StatelessWidget {
                   padding: EdgeInsets.all(10),
                   decoration: BoxDecoration(
                     border: Border.all(
-                      color: Colors.purple,
+                      color: Theme.of(context).primaryColorDark,
                       width: 2,
                     ),
                     borderRadius: BorderRadius.circular(3),
@@ -53,7 +53,7 @@ class TransactionList extends StatelessWidget {
                       DateFormat().add_yMMMd().format(transactions[index].date),
                       textAlign: TextAlign.left,
                       style: TextStyle(
-                        color: Colors.grey,
+                        color: Theme.of(context).primaryColorDark,
                       ),
                     ),
                   ],
