@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import './widgets/new_transaction.dart';
 import './models/transaction.dart';
 import './widgets/transaction_list.dart';
+import './widgets/chart.dart';
 
 void main() => runApp(MyApp());
 
@@ -12,6 +13,8 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'Personal expenses',
       home: MyHomePage(),
+
+      /// definition custom themes
       theme: ThemeData(
         primarySwatch: Colors.orange,
         accentColor: Colors.black45,
@@ -41,6 +44,7 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
+  /// Creating dummy transactions
   final List<Transaction> _userTransactions = [
 //    Transaction(
 //      id: 't1',
@@ -56,6 +60,16 @@ class _MyHomePageState extends State<MyHomePage> {
 //    ),
   ];
 
+  /// Filtering transactions for a last 7 days
+  List<Transaction> get _recentTransactions {
+    return _userTransactions.where((txElement) {
+      return txElement.date.isAfter(
+        DateTime.now().subtract(Duration(days: 7)),
+      );
+    }).toList();
+  }
+
+  /// Adding new transaction method
   void _addNewTransaction(String title, double amount) {
     final newTransaction = Transaction(
       id: DateTime.now().toString(),
@@ -68,6 +82,7 @@ class _MyHomePageState extends State<MyHomePage> {
     });
   }
 
+  /// Opening popup sheet for add transaction
   void _startAddNewTransaction(BuildContext context) {
     showModalBottomSheet(
       context: context,
@@ -98,14 +113,7 @@ class _MyHomePageState extends State<MyHomePage> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.center,
           children: <Widget>[
-            Container(
-              width: double.infinity,
-              child: Card(
-                color: Colors.blue,
-                child: Text('CHART!'),
-                elevation: 5,
-              ),
-            ),
+            Chart(_recentTransactions),
             Column(
               children: <Widget>[
                 TransactionList(_userTransactions),

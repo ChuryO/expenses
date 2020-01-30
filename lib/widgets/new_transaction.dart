@@ -11,14 +11,17 @@ class NewTransaction extends StatefulWidget {
 
 class _NewTransactionState extends State<NewTransaction> {
   final titleController = TextEditingController();
-
   final amountController = TextEditingController();
 
   void submitData() {
     final enteredTitle = titleController.text;
     final enteredAmount = double.tryParse(amountController.text);
+
+    /// dummy validation
     if (enteredTitle.isNotEmpty || (enteredAmount > 0)) {
       widget.addNewTransaction(enteredTitle, enteredAmount);
+
+      /// closing popup after saving data
       Navigator.of(context).pop();
     } else
       return;
