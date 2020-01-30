@@ -46,18 +46,18 @@ class MyHomePage extends StatefulWidget {
 class _MyHomePageState extends State<MyHomePage> {
   /// Creating dummy transactions
   final List<Transaction> _userTransactions = [
-//    Transaction(
-//      id: 't1',
-//      title: 'New Shoes',
-//      amount: 69.99,
-//      date: DateTime.now(),
-//    ),
-//    Transaction(
-//      id: 't2',
-//      title: 'Groceries',
-//      amount: 16.53,
-//      date: DateTime.now(),
-//    ),
+    Transaction(
+      id: 't1',
+      title: 'New Shoes',
+      amount: 69.99,
+      date: DateTime.now(),
+    ),
+    Transaction(
+      id: 't2',
+      title: 'Groceries',
+      amount: 16.53,
+      date: DateTime.now(),
+    ),
   ];
 
   /// Filtering transactions for a last 7 days
