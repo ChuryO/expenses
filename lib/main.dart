@@ -19,20 +19,26 @@ class MyApp extends StatelessWidget {
         primarySwatch: Colors.orange,
         accentColor: Colors.black45,
         fontFamily: 'Quicksand',
-        textTheme: ThemeData.light().textTheme.copyWith(
-              title: TextStyle(
-                  fontFamily: 'Open Sans',
-                  fontWeight: FontWeight.bold,
-                  fontSize: 18),
-              button: TextStyle(color: Colors.white),
-            ),
+        textTheme: ThemeData
+            .light()
+            .textTheme
+            .copyWith(
+          title: TextStyle(
+              fontFamily: 'Open Sans',
+              fontWeight: FontWeight.bold,
+              fontSize: 18),
+          button: TextStyle(color: Colors.white),
+        ),
         appBarTheme: AppBarTheme(
-          textTheme: ThemeData.light().textTheme.copyWith(
-                title: TextStyle(
-                  fontFamily: 'Open Sans',
-                  fontSize: 20,
-                ),
-              ),
+          textTheme: ThemeData
+              .light()
+              .textTheme
+              .copyWith(
+            title: TextStyle(
+              fontFamily: 'Open Sans',
+              fontSize: 20,
+            ),
+          ),
         ),
       ),
     );
@@ -83,6 +89,13 @@ class _MyHomePageState extends State<MyHomePage> {
     });
   }
 
+  ///Removing transaction method
+  void _deleteTransaction(String id) {
+    setState(() {
+      _userTransactions.removeWhere((transaction) => transaction.id == id);
+    });
+  }
+
   /// Opening popup sheet for add transaction
   void _startAddNewTransaction(BuildContext context) {
     showModalBottomSheet(
@@ -117,7 +130,7 @@ class _MyHomePageState extends State<MyHomePage> {
             Chart(_recentTransactions),
             Column(
               children: <Widget>[
-                TransactionList(_userTransactions),
+                TransactionList(_userTransactions, _deleteTransaction),
               ],
             ),
           ],
