@@ -5,7 +5,14 @@ import './models/transaction.dart';
 import './widgets/transaction_list.dart';
 import './widgets/chart.dart';
 
-void main() => runApp(MyApp());
+void main() {
+  /// only vertical orientation
+//  SystemChrome.setPreferredOrientations([
+//    DeviceOrientation.portraitUp,
+//    DeviceOrientation.portraitDown,
+//  ]);
+  runApp(MyApp());
+}
 
 class MyApp extends StatelessWidget {
   @override
@@ -16,8 +23,8 @@ class MyApp extends StatelessWidget {
 
       /// definition custom themes
       theme: ThemeData(
-        primarySwatch: Colors.orange,
-        accentColor: Colors.black45,
+        primarySwatch: Colors.red,
+        accentColor: Colors.grey,
         fontFamily: 'Quicksand',
         textTheme: ThemeData.light().textTheme.copyWith(
               title: TextStyle(
@@ -70,6 +77,9 @@ class _MyHomePageState extends State<MyHomePage> {
     }).toList();
   }
 
+  ///
+  bool _showChart = false;
+
   /// Adding new transaction method
   void _addNewTransaction(String title, double amount, DateTime date) {
     final newTransaction = Transaction(
@@ -112,6 +122,7 @@ class _MyHomePageState extends State<MyHomePage> {
 
   @override
   Widget build(BuildContext context) {
+    /// add AppBar into var to calc height
     final appBar = AppBar(
       title: const Text('Personal expenses'),
       elevation: 5,
@@ -123,20 +134,49 @@ class _MyHomePageState extends State<MyHomePage> {
       ],
     );
 
+    /// check screen orientation
+    final _isLandscape =
+        MediaQuery.of(context).orientation == Orientation.landscape;
+
+    final _txListWidget = Container(
+      height: _calculateHeight(appBar) * .7,
+      child: TransactionList(_userTransactions, _deleteTransaction),
+    );
+
     return Scaffold(
       appBar: appBar,
       body: SingleChildScrollView(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.center,
           children: <Widget>[
-            Container(
-              height: _calculateHeight(appBar) * 0.3,
-              child: Chart(_recentTransactions),
-            ),
-            Container(
-              height: _calculateHeight(appBar) * 0.7,
-              child: TransactionList(_userTransactions, _deleteTransaction),
-            ),
+            if (_isLandscape)
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: <Widget>[
+                  Text('Show chart'),
+                  Switch(
+                    value: _showChart,
+                    onChanged: (val) {
+                      setState(() {
+                        _showChart = val;
+                      });
+                    },
+                  ),
+                ],
+              ),
+            if (!_isLandscape)
+              Container(
+                height: _calculateHeight(appBar) * .3,
+                child: Chart(_recentTransactions),
+              ),
+            if (!_isLandscape) _txListWidget,
+            if (_isLandscape)
+              _showChart
+                  ? Container(
+                      height: _calculateHeight(appBar) * .7,
+                      child: Chart(_recentTransactions),
+                    )
+                  : _txListWidget,
           ],
         ),
       ),
