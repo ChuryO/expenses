@@ -19,26 +19,20 @@ class MyApp extends StatelessWidget {
         primarySwatch: Colors.orange,
         accentColor: Colors.black45,
         fontFamily: 'Quicksand',
-        textTheme: ThemeData
-            .light()
-            .textTheme
-            .copyWith(
-          title: TextStyle(
-              fontFamily: 'Open Sans',
-              fontWeight: FontWeight.bold,
-              fontSize: 18),
-          button: TextStyle(color: Colors.white),
-        ),
-        appBarTheme: AppBarTheme(
-          textTheme: ThemeData
-              .light()
-              .textTheme
-              .copyWith(
-            title: TextStyle(
-              fontFamily: 'Open Sans',
-              fontSize: 20,
+        textTheme: ThemeData.light().textTheme.copyWith(
+              title: TextStyle(
+                  fontFamily: 'Open Sans',
+                  fontWeight: FontWeight.bold,
+                  fontSize: 18),
+              button: TextStyle(color: Colors.white),
             ),
-          ),
+        appBarTheme: AppBarTheme(
+          textTheme: ThemeData.light().textTheme.copyWith(
+                title: TextStyle(
+                  fontFamily: 'Open Sans',
+                  fontSize: 20,
+                ),
+              ),
         ),
       ),
     );
@@ -110,28 +104,38 @@ class _MyHomePageState extends State<MyHomePage> {
     );
   }
 
+  /// calc height method
+  double _calculateHeight(AppBar appBar) {
+    final ctx = MediaQuery.of(context);
+    return ctx.size.height - appBar.preferredSize.height - ctx.padding.top;
+  }
+
   @override
   Widget build(BuildContext context) {
+    final appBar = AppBar(
+      title: const Text('Personal expenses'),
+      elevation: 5,
+      actions: <Widget>[
+        IconButton(
+          icon: Icon(Icons.add),
+          onPressed: () => _startAddNewTransaction(context),
+        ),
+      ],
+    );
+
     return Scaffold(
-      appBar: AppBar(
-        title: Text('Personal expenses'),
-        elevation: 5,
-        actions: <Widget>[
-          IconButton(
-            icon: Icon(Icons.add),
-            onPressed: () => _startAddNewTransaction(context),
-          ),
-        ],
-      ),
+      appBar: appBar,
       body: SingleChildScrollView(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.center,
           children: <Widget>[
-            Chart(_recentTransactions),
-            Column(
-              children: <Widget>[
-                TransactionList(_userTransactions, _deleteTransaction),
-              ],
+            Container(
+              height: _calculateHeight(appBar) * 0.3,
+              child: Chart(_recentTransactions),
+            ),
+            Container(
+              height: _calculateHeight(appBar) * 0.7,
+              child: TransactionList(_userTransactions, _deleteTransaction),
             ),
           ],
         ),
